@@ -3,30 +3,32 @@
 #include <string>
 #include <cstdlib>
 
-void benchmarkCommand(const std::string& command) {
-    std::cout << "Benchmarking: " << command << std::endl;
-    auto start = std::chrono::high_resolution_clock::now();
-    int retCode = std::system(command.c_str());
-    auto end = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+using namespace std;
+
+void benchmarkCommand(const string& command) {
+    cout << "Benchmarking: " << command << endl;
+    auto start = chrono::high_resolution_clock::now();
+    int retCode = system(command.c_str());
+    auto end = chrono::high_resolution_clock::now();
+    auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
 
     if (retCode == 0) {
-        std::cout << "Execution time: " << duration.count() << " ms" << std::endl;
+        cout << "Execution time: " << duration.count() << " ms" << endl;
     } else {
-        std::cerr << "Error: The command failed with code " << retCode << std::endl;
+        cerr << "Error: The command failed with code " << retCode << endl;
     }
 }
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        std::cerr << "Usage: " << argv[0] << " <command or file to execute>" << std::endl;
+        cerr << "Usage: " << argv[0] << " <command or file to execute>" << endl;
         return 1;
     }
 
-    std::string command;
-    for (int i = 1; i < argc; ++i) {
+    string command = argv[1];
+    for (int i = 2; i < argc; ++i) {
+        command += " ";
         command += argv[i];
-        if (i < argc - 1) command += " ";
     }
 
     benchmarkCommand(command);
